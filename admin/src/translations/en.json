@@ -1,0 +1,17 @@
+{
+  "component-docs.label": "Documentation link",
+  "component-docs.description": "Add a link to component documentation",
+  "component-docs.view-docs": "View Documentation",
+  "component-docs.placeholder": "https://docs.example.com/component-name",
+  "component-docs.settings": "Settings",
+  "component-docs.required": "Required field",
+  "component-docs.required.description": "You won't be able to create an entry if this field is empty",
+  "component-docs.private": "Private field",
+  "component-docs.private.description": "This field will not show up in the API response",
+  "component-docs.regex": "RegExp pattern",
+  "component-docs.regex.description": "The text of the regular expression",
+  "component-docs.maxLength": "Maximum length",
+  "component-docs.minLength": "Minimum length",
+  "component-docs.unique": "Unique field",
+  "component-docs.unique.description": "You won't be able to create an entry if there is an existing entry with identical content"
+}
