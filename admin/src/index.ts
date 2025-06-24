@@ -94,27 +94,60 @@ export default {
             ]
           }
         ],
-        validator: (args: any) => {
-          const defaultOptions = args[2].modifiedData.options?.defaultOptions;
-
-          const validateOptions = (value: string | undefined) => {
-            if (!value || value.trim() === '') return false;
-            
-            const lines = value.split('\n').filter(line => line.trim() !== '');
-            if (lines.length === 0) return false;
-            
-            const lineRegex = /^(?:[^:]+:[^:]+|[^:]+)$/;
-            return lines.every(line => lineRegex.test(line.trim()));
+        validator: () => {
+          const hasDuplicateLines = (lines: string[]) => {
+            const uniqueLines = new Set(lines);
+            return lines.length !== uniqueLines.size;
           };
 
-          const schema = yup.object({
-            defaultOptions: yup
-              .string()
-              .required('Options are required')
-              .test('valid-options', 'Each line must be in format "Label:Value" or just "Value"', validateOptions),
-          });
+          const validateComboboxOptions = (value: string | undefined) => {
+            if (!value) return true;
+            
+            const lines = value.split('\n');
+            const lineRegex = /^(?:[^:]+:[^:]+|[^:]+)$/;
+            
+            if (lines.some(line => !line || line.trim() === '')) return false;
+            if (!lines.every(line => lineRegex.test(line.trim()))) return false;
+            if (hasDuplicateLines(lines.map(line => line.trim()))) return false;
 
-          return schema;
+            return true;
+          };
+
+          const validateRegexPattern = (value: string | undefined) => {
+            if (!value) return true;
+            
+            try {
+              new RegExp(value);
+              return true;
+            } catch {
+              return false;
+            }
+          };
+
+          const errorMessages = {
+            required: 'This field is required',
+            badOptionsFormat: 'Each line must be in format "Label:Value" or just "Value" (no empty lines or duplicates allowed)',
+            badRegexFormat: 'Must be a valid regular expression',
+          };
+
+          const createValidation = (
+            fieldName: string,
+            isRequired: boolean,
+            validator: (value: string | undefined) => boolean,
+            errorMessage: string
+          ) => {
+            const baseSchema = isRequired ? yup.string().required(errorMessages.required) : yup.string().optional();
+            
+            return baseSchema.test(fieldName, {
+              id: `error.${fieldName}`,
+              defaultMessage: errorMessage,
+            }, validator);
+          };
+           
+          return {
+            defaultOptions: createValidation('defaultOptions', true, validateComboboxOptions, errorMessages.badOptionsFormat),
+            customValidation: createValidation('customValidation', false, validateRegexPattern, errorMessages.badRegexFormat),
+          };
         },
       },
     })
