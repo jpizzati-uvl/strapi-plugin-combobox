@@ -18,12 +18,12 @@ export default {
       type: 'string',
       icon: PluginIcon,
       intlLabel: {
-        id: 'component-docs.label',
-        defaultMessage: 'Documentation link',
+        id: 'combobox.label',
+        defaultMessage: 'Combobox',
       },
       intlDescription: {
-        id: 'component-docs.description',
-        defaultMessage: 'Add a link to component documentation',
+        id: 'combobox.description',
+        defaultMessage: 'Type or select from a list of options',
       },
       components: {
         Input: async () => import('./components/Input'),
@@ -31,80 +31,90 @@ export default {
       options: {
         base: [
           {
-            name: 'options.url',
-            type: 'text',
-            intlLabel: {
-              id: 'component-docs.url',
-              defaultMessage: 'URL',
+            sectionTitle: {
+              id: `${PLUGIN_ID}.section.basic-settings`,
+              defaultMessage: "Basic Settings",
             },
-            description: {
-              id: 'component-docs.url.description',
-              defaultMessage: 'The href to create the link',
-            },
-          },
-          {
-            name: 'options.disableIframe', 
-            type: 'checkbox',
-            intlLabel: {
-              id: 'component-docs.disableIframe',
-              defaultMessage: 'Disable Iframe?',
-            },
-            description: {
-              id: 'component-docs.required.disableIframe',
-              defaultMessage: 'Disables iframe modal and opens the link in a new tab',
-            },
-          },
+            items:[
+              {
+                required: true,
+                name: 'options.defaultOptions',
+                type: 'textarea',
+                placeholder: {
+                  id: `${PLUGIN_ID}.defaultOptions.placeholder`,
+                  defaultMessage: "Option A Label:Option A Value\nOption B Label:Option B Value\nOption C Label:Option C Value\nOption D Label:Option D Value",
+                },
+                intlLabel: {
+                  id: `${PLUGIN_ID}.defaultOptions`,
+                  defaultMessage: 'Default options (Label:Value or Value)',
+                },
+                description: {
+                  id: `${PLUGIN_ID}.defaultOptions.description`,
+                  defaultMessage: 'These values will be used to populate the combobox options. One per line.',
+                },
+              },
+              {
+                name: 'options.enableCreateableOptions',
+                type: 'checkbox',
+                intlLabel: {
+                  id: `${PLUGIN_ID}.enableCreateableOptions`,
+                  defaultMessage: 'Enable createable options?',
+                },
+                description: {
+                  id: `${PLUGIN_ID}.enableCreateableOptions.description`,
+                  defaultMessage: 'If enabled, custom options can be created',
+                },
+              }
+            ]
+          }
         ],
         advanced: [
           {
-            name: 'private',
-            type: 'checkbox',
-            disabled: true,
-            intlLabel: {
-              id: 'component-docs.private',
-              defaultMessage: 'Private field',
+            sectionTitle: {
+              id: `${PLUGIN_ID}.section.advanced-settings`,
+              defaultMessage: "Advanced Settings",
             },
-            description: {
-              id: 'component-docs.private.description',
-              defaultMessage: 'This field will not show up in the API response',
-            },
-          },
+            items: [
+              {
+                name: 'options.customValidation',
+                type: 'text',
+                placeholder: {
+                  id: `${PLUGIN_ID}.customValidation.placeholder`,
+                  defaultMessage: "/^\d*\.?\d+$/",
+                },
+                intlLabel: {
+                  id: `${PLUGIN_ID}.customValidation`,
+                  defaultMessage: 'Custom regex',
+                },
+                description: {
+                  id: `${PLUGIN_ID}.customColorsPresets.description`,
+                  defaultMessage: 'This value will be used to validate combobox options.',
+                },
+              }
+            ]
+          }
         ],
         validator: (args: any) => {
-          // Extract options from the modifiedData
-          const { url: configUrl } = args[2].modifiedData.options || {};
-          
-          const errorMessages = {
-            required: 'This field is required',
-            invalidUrl: 'The URL must be a valid URL format.'
-          };
-          
-          const validateUrl = (url: string | undefined): boolean => {
-            if (!url || url.trim() === '') return false;
-            
-            // Basic URL validation
-            try {
-              const urlPattern = /^(https?:\/\/|\/)/i;
-              return urlPattern.test(url.trim());
-            } catch (e) {
-              return false;
-            }
-          };
-          
-          // Create validation function similar to the reference pattern
-          const createValidation = (fieldValue: string | undefined) => {
-            const baseSchema = yup.string().required(errorMessages.required);
+          const defaultOptions = args[2].modifiedData.options?.defaultOptions;
 
-            return baseSchema.test('url', {
-              id: 'error.url',
-              defaultMessage: errorMessages.invalidUrl,
-            }, validateUrl);
+          const validateOptions = (value: string | undefined) => {
+            if (!value || value.trim() === '') return false;
+            
+            const lines = value.split('\n').filter(line => line.trim() !== '');
+            if (lines.length === 0) return false;
+            
+            const lineRegex = /^(?:[^:]+:[^:]+|[^:]+)$/;
+            return lines.every(line => lineRegex.test(line.trim()));
           };
-          
-          // Return validation result
-          return {
-            url: createValidation(configUrl),
-          };
+
+          const schema = yup.object({
+            defaultOptions: yup
+              .string()
+              .required('Options are required')
+              .test('valid-options', 'Each line must be in format "Label:Value" or just "Value"', validateOptions),
+          });
+
+          return schema;
         },
       },
     })

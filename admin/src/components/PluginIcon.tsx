@@ -1,5 +1,5 @@
 import { Flex } from '@strapi/design-system';
-import { Link } from '@strapi/icons';
+import { BulletList } from '@strapi/icons';
 import { styled } from 'styled-components';
 
 const IconBox = styled(Flex)`
@@ -16,7 +16,7 @@ const IconBox = styled(Flex)`
 export const PluginIcon = () => {
   return (
     <IconBox justifyContent="center" alignItems="center" width={7} height={6} hasRadius aria-hidden>
-      <Link />
+      <BulletList />
     </IconBox>
   );
 };

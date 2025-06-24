@@ -1,17 +1,12 @@
 {
-  "component-docs.label": "Documentation link",
-  "component-docs.description": "Add a link to component documentation",
-  "component-docs.view-docs": "View Documentation",
-  "component-docs.placeholder": "https://docs.example.com/component-name",
-  "component-docs.settings": "Settings",
-  "component-docs.required": "Required field",
-  "component-docs.required.description": "You won't be able to create an entry if this field is empty",
-  "component-docs.private": "Private field",
-  "component-docs.private.description": "This field will not show up in the API response",
-  "component-docs.regex": "RegExp pattern",
-  "component-docs.regex.description": "The text of the regular expression",
-  "component-docs.maxLength": "Maximum length",
-  "component-docs.minLength": "Minimum length",
-  "component-docs.unique": "Unique field",
-  "component-docs.unique.description": "You won't be able to create an entry if there is an existing entry with identical content"
+  "combobox.label": "Combobox",
+  "combobox.description": "Type or select from a list of options",
+  "combobox.placeholder": "",
+  "combobox.settings": "Settings",
+  "combobox.required": "Required field",
+  "combobox.required.description": "You won't be able to create an entry if this field is empty",
+  "combobox.private": "Private field",
+  "combobox.private.description": "This field will not show up in the API response",
+  "combobox.customValidation": "RegExp pattern",
+  "combobox.customValidation.description": "The text of the regular expression"
 }

@@ -59,11 +59,11 @@
   "strapi": {
     "kind": "plugin",
     "name": "combobox",
-    "displayName": "Component Docs",
-    "description": "Add documentation link to your component"
+    "displayName": "Combobox",
+    "description": "Type or select from a list of options."
   },
   "name": "strapi-plugin-combobox",
-  "description": "Add documentation link to your component",
+  "description": "Type or select from a list of options",
   "license": "MIT",
-  "author": "Jorge Pizzati <jorge.pizzati@uvltd.tech>"
+  "author": "Jorge Pizzati <jorge.pizzati@ic-unique.com>"
 }
