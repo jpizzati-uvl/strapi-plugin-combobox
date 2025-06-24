@@ -25,16 +25,14 @@ npm install strapi-plugin-combobox
 yarn add strapi-plugin-combobox
 ```
 
-````
-
 ## ⚙️ Configuration
 
 ### 🔧 Basic Settings
 
-| Option                    | Type    | Default | Description                                         |
-| ------------------------- | ------- | ------- | --------------------------------------------------- |
-| `defaultOptions`          | string  | -       | List of options (format: "Label\:Value" or "Value") |
-| `enableCreateableOptions` | boolean | false   | Allow users to create new options                   |
+| Option                    | Type    | Default | Description                                        |
+| ------------------------- | ------- | ------- | -------------------------------------------------- |
+| `defaultOptions`          | string  | -       | List of options (format: "Label:Value" or "Value") |
+| `enableCreateableOptions` | boolean | false   | Allow users to create new options                  |
 
 📝 Example options format:
 
@@ -63,7 +61,6 @@ Another Simple Option
 1. 🧱 After installation, the plugin will be available as a custom field type in your Content-Types Builder.
 2. ➕ Add a new field and select "Combobox" as the field type.
 3. ⚙️ Configure the field options:
-
    - 📋 Add your default options (required)
    - 🆓 Enable createable options if you want users to add custom values
    - 🧩 Add custom validation regex if needed
@@ -72,7 +69,7 @@ Another Simple Option
 
 Options can be specified in two formats:
 
-1. **📝 Label\:Value format** – Display a user-friendly label while storing a different value
+1. **📝 Label:Value format** – Display a user-friendly label while storing a different value
 
    ```
    Display Name:internal-value
@@ -106,4 +103,3 @@ We welcome contributions! You can help by:
 ## 📄 License
 
 MIT License – © Jorge Pizzati
-````
